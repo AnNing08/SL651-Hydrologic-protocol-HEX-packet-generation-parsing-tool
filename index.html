@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SL651HEX报文生成工具，快速生成符合SL651HEX协议的报文">
+    <meta name="keywords" content="SL651HEX, 报文生成, 工具, 协议">
+    <meta name="author" content="秦先生">
+    <title>SL651水文协议HEX报文生成/解析工具</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- 引入外部 CSS 文件 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>SL651水文协议HEX报文生成/解析工具</h1>
+</header>
+
+<main>
+    <section>
+        <h2>简介</h2>
+        <p>
+            SL651水文协议HEX报文生成/解析工具帮助你快速生成符合SL651水文协议HEX的报文。输入所需参数，即可生成标准报文格式或解析报文。</p>
+    </section>
+
+    <section>
+        <h2>功能</h2>
+        <ul>
+            <li>自动化生成/解析SL651水文协议HEX报文</li>
+            <li>快速验证报文格式</li>
+            <li>简单易用，支持多种配置</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>开始使用</h2>
+        <button type="button" class="btn" id="generateMessageBtn" aria-label="生成报文">点击开始生成报文</button>
+        <button type="button" class="btn" id="analyzeMessageBtn" aria-label="解析报文">点击开始解析报文</button>
+    </section>
+</main>
+
+<!-- 模态弹窗 -->
+<div id="generateModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h3>生成报文</h3>
+        <form id="messageForm">
+            <div class="form-group">
+                <label for="frameStartCharacter">报头帧起始符</label>
+                <input type="text" id="frameStartCharacter" name="frameStartCharacter" value="7E7E" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="centerAddr">中心站地址</label>
+                <input type="text" id="centerAddr" name="centerAddr" value="01" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="telemetryStationAddr">遥测站地址</label>
+                <input type="text" id="telemetryStationAddr" name="telemetryStationAddr" maxlength="10" required
+                       placeholder="请输入10位遥测站地址" oninput="telemetryStationAddrIpu()">
+            </div>
+
+            <div class="form-group">
+                <label for="pwd">密码</label>
+                <input type="text" id="pwd" name="pwd" maxlength="4" required
+                       placeholder="请输入4位密码">
+            </div>
+
+            <div class="form-group">
+                <label for="functionCode">功能码</label>
+                <select id="functionCode" name="functionCode">
+                    <option value="2f">链路维持报</option>
+                    <option value="30">测试报</option>
+                    <option value="32">定时报</option>
+                    <option value="33">加报报</option>
+                    <option value="34">小时报</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="identifierLength">正文标识符及长度</label>
+                <input type="text" id="identifierLength" name="identifierLength" readonly
+                       placeholder="自动生成">
+            </div>
+
+            <div class="form-group">
+                <label for="msgStart">报文开始符</label>
+                <input type="text" id="msgStart" name="msgStart" value="02" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="serialNumber">流水号</label>
+                <input type="text" id="serialNumber" name="serialNumber" readonly
+                       placeholder="自动生成"
+                       style="display: inline-block;width: 72%">
+                <button type="button" class="anew-generate-btn" id="serialNumberBtn">重新生成</button>
+            </div>
+
+            <div class="form-group">
+                <label for="transmitTime">发报时间</label>
+                <input type="text" id="transmitTime" name="transmitTime" readonly
+                       placeholder="自动生成"
+                       style="display: inline-block;width: 72%">
+                <button type="button" id="transmitTimeBtn" class="anew-generate-btn">重新生成</button>
+            </div>
+
+            <div class="form-group">
+                <label for="telemetryStationAddrTwo">正文遥测站地址</label>
+                <input type="text" id="telemetryStationAddrTwo" name="telemetryStationAddrTwo" readonly
+                       placeholder="自动生成">
+            </div>
+
+            <div class="form-group">
+                <label for="telemetryStationCode">遥测站分类码</label>
+                <select id="telemetryStationCode" name="telemetryStationCode">
+                    <option value="50">降水</option>
+                    <option value="48">河道</option>
+                    <option value="4B">水库(湖泊)</option>
+                    <option value="5A">闸坝</option>
+                    <option value="44">泵站</option>
+                    <option value="54">潮汐</option>
+                    <option value="4D">墒情</option>
+                    <option value="47">地下水</option>
+                    <option value="51">水质</option>
+                    <option value="49">取水口</option>
+                    <option value="4F">排水口</option>
+                </select>
+            </div>
+
+            <!-- Observation Time -->
+            <div class="form-group">
+                <label for="observationTime">观测时间</label>
+                <input type="text" id="observationTime" name="observationTime" readonly
+                       placeholder="自动生成">
+            </div>
+
+            <!-- Message End -->
+            <div class="form-group">
+                <label for="msgEnd">报文结束符</label>
+                <input type="text" id="msgEnd" name="msgEnd" value="03" readonly>
+            </div>
+
+            <!-- CRC Check Code -->
+            <div class="form-group">
+                <label for="CRCCheckCode">CRC校验码</label>
+                <input type="text" id="CRCCheckCode" name="CRCCheckCode" readonly
+                       placeholder="自动生成">
+            </div>
+
+            <div class="form-group"></div>
+
+        </form>
+
+        <!-- 按钮新增输入框 -->
+        <button type="button" class="add-input-btn" id="addInputFieldBtn">新增参数输入框</button>
+
+        <!-- 删除参数输入框 -->
+        <button type="button" class="remove-input-btn" id="removeInputFieldBtn">删除参数输入框</button>
+
+        <button type="button" class="btn" id="generateReportBtn" aria-label="生成报文">生成报文</button>
+
+        <div id="result" style="display: none; margin-top: 20px;">
+            <h4>生成的报文：</h4>
+            <p id="generatedMessage"></p>
+        </div>
+    </div>
+</div>
+
+<!-- 模态弹窗 -->
+<div id="analyzeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModalTwo">&times;</span>
+        <h3>解析报文</h3>
+        <form id="messageFormTwo">
+            <div class="form-group" style="width: 100%">
+                <label for="messageTextarea">请输入待解析的报文</label>
+                <textarea id="messageTextarea" placeholder="请输入待解析的报文" rows="10" cols="50"></textarea>
+            </div>
+        </form>
+
+        <button type="button" class="btn" id="analyzeReportBtn" aria-label="解析报文">解析报文</button>
+
+        <div style="color: red;">
+            <span style="display: block;">注ps:</span>
+            <span style="display: block;">请正确的填写待解析的报文</span>
+            <span style="display: block;">-65535表示该数据没有解析成功</span>
+        </div>
+
+        <div id="resultTwo" style="display: none; margin-top: 20px;">
+            <h4>解析的报文：</h4>
+            <p id="analyzeMessage"></p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <a href="https://beian.miit.gov.cn" target="_blank"
+           style="color: #fff; text-decoration: none;">鲁ICP备077130号</a>
+        © 2025 SL651水文协议HEX报文生成/解析工具 |
+        <a href="https://www.baidu.com" target="_blank"
+           style="color: #fff; text-decoration: none;">访问官网</a>
+    </p>
+    <p>
+        本页面上一切认证皆为假的
+    </p>
+</footer>
+
+<!-- 引入外部 JavaScript 文件 -->
+<script src="script.js"></script>
+
+</body>
+</html>

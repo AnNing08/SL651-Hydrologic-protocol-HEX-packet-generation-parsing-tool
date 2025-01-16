@@ -1,4 +1,4 @@
-# SL651HexPacketGenerated
+# SL651 Hydrologic protocol HEX packet generation/parsing tool
 <header>
     <h1>SL651水文协议HEX报文生成/解析工具</h1>
 </header>

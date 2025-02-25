@@ -5,13 +5,240 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SL651HEX报文生成工具，快速生成符合SL651HEX协议的报文">
     <meta name="keywords" content="SL651HEX, 报文生成, 工具, 协议">
-    <meta name="author" content="秦先生">
-    <title>SL651水文协议HEX报文生成/解析工具</title>
+    <meta name="author" content="你的名字">
+    <title>SL651水文协议HEX报文生成</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- 引入外部 CSS 文件 -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 全局CSS变量定义 */
+        :root {
+            --primary-color: #333; /* 主色调 */
+            --secondary-color: #f4f4f4; /* 背景色 */
+            --accent-color: #4CAF50; /* 强调色，用于按钮 */
+            --font-family: 'Noto Sans SC', sans-serif; /* 字体 */
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color); /* 设置背景色 */
+            overflow-x: hidden; /* 防止横向滚动 */
+        }
+
+        header {
+            background-color: var(--primary-color); /* 设置头部背景色 */
+            color: white; /* 白色文字 */
+            padding: 10px 0; /* 上下内边距 */
+            text-align: center; /* 居中显示标题 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: var(--primary-color); /* 设置页脚背景色 */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0; /* 固定在页面底部 */
+        }
+
+        /* 按钮样式 */
+        .btn {
+            background-color: var(--accent-color); /* 按钮背景色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 5px; /* 圆角按钮 */
+            transition: background-color 0.3s; /* 背景色变化的过渡效果 */
+        }
+
+        .btn:hover {
+            background-color: #45a049; /* 鼠标悬停时的按钮颜色 */
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* 避免模态框本身出现滚动条 */
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* 设置宽度为视口的80% */
+            max-width: 1000px; /* 最大宽度为1000px */
+            height: 80%; /* 设置高度为视口的80% */
+            max-height: 80vh; /* 最大高度为视口的90% */
+            overflow-y: auto; /* 内容溢出时垂直滚动 */
+            overflow-x: hidden; /* 禁止横向滚动 */
+            box-sizing: border-box; /* 确保内边距和边框在宽高计算内 */
+
+            position: fixed; /* 使用 fixed 定位 */
+            top: 49.5%; /* 距离顶部49.5% */
+            left: 50%; /* 距离左侧50% */
+            transform: translate(-50%, -50%); /* 调整位置，使其居中 */
+            border-radius: 5px; /* 添加圆角 */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 输入框和选择框样式 */
+        .form-group {
+            margin-bottom: 15px;
+            display: inline-block;
+            width: 33%; /* 控制每行显示3个输入框 */
+            padding-right: 10px;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* 包括内边距和边框 */
+        }
+
+        /* 小屏幕响应式布局 */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem; /* 标题字体大小自适应 */
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* 增加、删除输入框按钮样式 */
+        .add-input-btn, .remove-input-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: none;
+            font-size: 1rem;
+            transition: background-color 0.3s; /* 背景色变化的过渡效果 */
+        }
+
+        .add-input-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .remove-input-btn {
+            background-color: #f42515;
+            color: white;
+        }
+
+        .add-input-btn:hover {
+            background-color: #45a049;
+        }
+
+        .remove-input-btn:hover {
+            background-color: #f6594d;
+        }
+
+        /* 生成报文按钮样式 */
+        .btn {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #007b8c;
+        }
+
+        .anew-generate-btn {
+            display: inline-block;
+            padding: 7px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #generatedMessage, #analyzeMessage {
+            word-wrap: break-word; /* 强制单词换行 */
+            overflow-wrap: break-word; /* 确保长单词不会溢出 */
+        }
+
+        textarea {
+            width: 100%; /* 宽度占满父容器 */
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* 确保内边距和边框不影响宽度计算 */
+            resize: none; /* 禁止拖动调整大小 */
+        }
+
+        textarea:focus {
+            border-color: #5b9bd5;
+            outline: none; /* 去除聚焦时的默认蓝色框 */
+        }
+
+    </style>
 </head>
 <body>
 
@@ -39,37 +266,44 @@
         <h2>开始使用</h2>
         <button type="button" class="btn" id="generateMessageBtn" aria-label="生成报文">点击开始生成报文</button>
         <button type="button" class="btn" id="analyzeMessageBtn" aria-label="解析报文">点击开始解析报文</button>
+        <button type="button" class="btn" id="parseDataLengthBtn" aria-label="解析数据长度">点击开始解析数据长度
+        </button>
     </section>
 </main>
 
-<!-- 模态弹窗 -->
+<!-- 第一个模态弹窗 -->
 <div id="generateModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeModal">&times;</span>
         <h3>生成报文</h3>
         <form id="messageForm">
+            <!-- Frame Start Character -->
             <div class="form-group">
                 <label for="frameStartCharacter">报头帧起始符</label>
                 <input type="text" id="frameStartCharacter" name="frameStartCharacter" value="7E7E" readonly>
             </div>
 
+            <!-- Center Address -->
             <div class="form-group">
                 <label for="centerAddr">中心站地址</label>
                 <input type="text" id="centerAddr" name="centerAddr" value="01" readonly>
             </div>
 
+            <!-- Telemetry Station Address -->
             <div class="form-group">
                 <label for="telemetryStationAddr">遥测站地址</label>
                 <input type="text" id="telemetryStationAddr" name="telemetryStationAddr" maxlength="10" required
                        placeholder="请输入10位遥测站地址" oninput="telemetryStationAddrIpu()">
             </div>
 
+            <!-- Password -->
             <div class="form-group">
                 <label for="pwd">密码</label>
                 <input type="text" id="pwd" name="pwd" maxlength="4" required
                        placeholder="请输入4位密码">
             </div>
 
+            <!-- Function Code-->
             <div class="form-group">
                 <label for="functionCode">功能码</label>
                 <select id="functionCode" name="functionCode">
@@ -81,17 +315,20 @@
                 </select>
             </div>
 
+            <!-- Identifier Length -->
             <div class="form-group">
                 <label for="identifierLength">正文标识符及长度</label>
                 <input type="text" id="identifierLength" name="identifierLength" readonly
                        placeholder="自动生成">
             </div>
 
+            <!-- Message Start -->
             <div class="form-group">
                 <label for="msgStart">报文开始符</label>
                 <input type="text" id="msgStart" name="msgStart" value="02" readonly>
             </div>
 
+            <!-- Serial Number -->
             <div class="form-group">
                 <label for="serialNumber">流水号</label>
                 <input type="text" id="serialNumber" name="serialNumber" readonly
@@ -100,6 +337,7 @@
                 <button type="button" class="anew-generate-btn" id="serialNumberBtn">重新生成</button>
             </div>
 
+            <!-- Transmit Time -->
             <div class="form-group">
                 <label for="transmitTime">发报时间</label>
                 <input type="text" id="transmitTime" name="transmitTime" readonly
@@ -108,12 +346,14 @@
                 <button type="button" id="transmitTimeBtn" class="anew-generate-btn">重新生成</button>
             </div>
 
+            <!-- Telemetry Station Addr Two -->
             <div class="form-group">
                 <label for="telemetryStationAddrTwo">正文遥测站地址</label>
                 <input type="text" id="telemetryStationAddrTwo" name="telemetryStationAddrTwo" readonly
                        placeholder="自动生成">
             </div>
 
+            <!-- Telemetry Station Code-->
             <div class="form-group">
                 <label for="telemetryStationCode">遥测站分类码</label>
                 <select id="telemetryStationCode" name="telemetryStationCode">
@@ -170,7 +410,7 @@
     </div>
 </div>
 
-<!-- 模态弹窗 -->
+<!-- 第二个模态弹窗 -->
 <div id="analyzeModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeModalTwo">&times;</span>
@@ -178,7 +418,7 @@
         <form id="messageFormTwo">
             <div class="form-group" style="width: 100%">
                 <label for="messageTextarea">请输入待解析的报文</label>
-                <textarea id="messageTextarea" placeholder="请输入待解析的报文" rows="10" cols="50"></textarea>
+                <textarea id="messageTextarea" rows="10" cols="50"></textarea>
             </div>
         </form>
 
@@ -197,17 +437,59 @@
     </div>
 </div>
 
+<!-- 第三个模态弹窗 -->
+<div id="parseDataLengthModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModalThree">&times;</span>
+        <h3>解析数据长度</h3>
+        <form id="messageFormThree">
+            <div class="form-group">
+                <label for="dataByteLength">请输入待解析的数据字节长度</label>
+                <input type="text" id="dataByteLength" name="dataByteLength" maxlength="2" required>
+            </div>
+        </form>
+        <button type="button" class="btn" id="parseDataByteLengthBtn" aria-label="解析数据字节长度">
+            解析数据字节长度
+        </button>
+        <div id="parseDataByteLengthResult" style="display: none; margin-top: 20px;">
+            <h4>解析的数据字节长度：</h4>
+            <p id="parseDataByteLengthResultTwo"></p>
+        </div>
+
+        <form id="messageFormFour">
+            <div class="form-group">
+                <label for="dataByteLengthTwo">请输入待解析的数据字节长度</label>
+                <input type="text" id="dataByteLengthTwo" name="dataByteLengthTwo" maxlength="2" required>
+            </div>
+            <div class="form-group">
+                <label for="decimalPlaces">请输入待解析的数据小数位数</label>
+                <input type="text" id="decimalPlaces" name="decimalPlaces" maxlength="1" required>
+            </div>
+        </form>
+        <button type="button" class="btn" id="parseDataByteLengthAndDecimalPlacesBtn"
+                aria-label="解析数据字节长度和小数位数">
+            解析数据字节长度和小数位数
+        </button>
+        <div id="parseDataByteLengthAndDecimalPlacesResult" style="display: none; margin-top: 20px;">
+            <h4>解析的数据字节长度和小数位数：</h4>
+            <p id="parseDataByteLengthAndDecimalPlacesResultTwo"></p>
+        </div>
+    </div>
+</div>
+
 <footer>
     <p>
         <a href="https://beian.miit.gov.cn" target="_blank"
-           style="color: #fff; text-decoration: none;">鲁ICP备077130号</a>
-        © 2025 SL651水文协议HEX报文生成/解析工具 |
+           style="color: #fff; text-decoration: none;">
+            鲁ICP备077130号
+        </a>
+        <span id="copyrightYear"></span> SL651水文协议HEX报文生成/解析工具 |
         <a href="https://www.baidu.com" target="_blank"
-           style="color: #fff; text-decoration: none;">访问官网</a>
+           style="color: #fff; text-decoration: none;">
+            访问官网
+        </a>
     </p>
-    <p>
-        本页面上一切认证皆为假的
-    </p>
+    <p>本页面上一切认证皆为假的</p>
 </footer>
 
 <!-- 引入外部 JavaScript 文件 -->

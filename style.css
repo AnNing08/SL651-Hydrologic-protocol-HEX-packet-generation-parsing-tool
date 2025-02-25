@@ -9,228 +9,228 @@ html{
   }
   
   /* 全局CSS变量定义 */
-  :root {
-    --primary-color: #333; /* 主色调 */
-    --secondary-color: #f4f4f4; /* 背景色 */
-    --accent-color: #4CAF50; /* 强调色，用于按钮 */
-    --font-family: 'Noto Sans SC', sans-serif; /* 字体 */
-  }
-  
-  body {
-    font-family: var(--font-family);
-    margin: 0;
-    padding: 0;
-    background-color: var(--secondary-color); /* 设置背景色 */
-    overflow-x: hidden; /* 防止横向滚动 */
-  }
-  
-  header {
-    background-color: var(--primary-color); /* 设置头部背景色 */
-    color: white; /* 白色文字 */
-    padding: 10px 0; /* 上下内边距 */
-    text-align: center; /* 居中显示标题 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
-  }
-  
-  header h1 {
-    font-size: 2rem;
-    margin: 0;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  footer {
-    background-color: var(--primary-color); /* 设置页脚背景色 */
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0; /* 固定在页面底部 */
-  }
-  
-  /* 按钮样式 */
-  .btn {
-    background-color: var(--accent-color); /* 按钮背景色 */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 5px; /* 圆角按钮 */
-    transition: background-color 0.3s; /* 背景色变化的过渡效果 */
-  }
-  
-  .btn:hover {
-    background-color: #45a049; /* 鼠标悬停时的按钮颜色 */
-  }
-  
-  @media (max-width: 600px) {
-    header h1 {
-        font-size: 1.5rem;
-    }
-  
-    .btn {
-        width: 100%;
-        padding: 15px;
-        font-size: 1.2rem;
-    }
-  }
-  
-  /* 弹窗样式 */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* 避免模态框本身出现滚动条 */
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
-    padding-top: 60px;
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* 设置宽度为视口的80% */
-    max-width: 1000px; /* 最大宽度为1000px */
-    height: 80%; /* 设置高度为视口的80% */
-    max-height: 80vh; /* 最大高度为视口的90% */
-    overflow-y: auto; /* 内容溢出时垂直滚动 */
-    overflow-x: hidden; /* 禁止横向滚动 */
-    box-sizing: border-box; /* 确保内边距和边框在宽高计算内 */
-  
-    position: fixed; /* 使用 fixed 定位 */
-    top: 49.5%; /* 距离顶部49.5% */
-    left: 50%; /* 距离左侧50% */
-    transform: translate(-50%, -50%); /* 调整位置，使其居中 */
-    border-radius: 5px; /* 添加圆角 */
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  /* 输入框和选择框样式 */
-  .form-group {
-    margin-bottom: 15px;
-    display: inline-block;
-    width: 33%; /* 控制每行显示3个输入框 */
-    padding-right: 10px;
-    box-sizing: border-box;
-  }
-  
-  label {
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 5px;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box; /* 包括内边距和边框 */
-  }
-  
-  /* 小屏幕响应式布局 */
-  @media (max-width: 600px) {
-    header h1 {
-        font-size: 1.5rem; /* 标题字体大小自适应 */
-    }
-  
-    .btn {
-        width: 100%;
-        padding: 15px;
-        font-size: 1.2rem;
-    }
-  }
-  
-  /* 增加、删除输入框按钮样式 */
-  .add-input-btn, .remove-input-btn {
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 20px;
-    border: none;
-    font-size: 1rem;
-    transition: background-color 0.3s; /* 背景色变化的过渡效果 */
-  }
-  
-  .add-input-btn {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .remove-input-btn {
-    background-color: #f42515;
-    color: white;
-  }
-  
-  .add-input-btn:hover {
-    background-color: #45a049;
-  }
-  
-  .remove-input-btn:hover {
-    background-color: #f6594d;
-  }
-  
-  /* 生成报文按钮样式 */
-  .btn {
-    background-color: #008CBA;
-    color: white;
-  }
-  
-  .btn:hover {
-    background-color: #007b8c;
-  }
-  
-  .anew-generate-btn {
-    display: inline-block;
-    padding: 7px;
-    cursor: pointer;
-    border-radius: 5px;
-    border: none;
-    font-size: 1rem;
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  #generatedMessage, #analyzeMessage {
-    word-wrap: break-word; /* 强制单词换行 */
-    overflow-wrap: break-word; /* 确保长单词不会溢出 */
-  }
-  
-  textarea {
-    width: 100%; /* 宽度占满父容器 */
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box; /* 确保内边距和边框不影响宽度计算 */
-    resize: none; /* 禁止拖动调整大小 */
-  }
-  
-  textarea:focus {
-    border-color: #5b9bd5;
-    outline: none; /* 去除聚焦时的默认蓝色框 */
-  }
+        :root {
+            --primary-color: #333; /* 主色调 */
+            --secondary-color: #f4f4f4; /* 背景色 */
+            --accent-color: #4CAF50; /* 强调色，用于按钮 */
+            --font-family: 'Noto Sans SC', sans-serif; /* 字体 */
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color); /* 设置背景色 */
+            overflow-x: hidden; /* 防止横向滚动 */
+        }
+
+        header {
+            background-color: var(--primary-color); /* 设置头部背景色 */
+            color: white; /* 白色文字 */
+            padding: 10px 0; /* 上下内边距 */
+            text-align: center; /* 居中显示标题 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: var(--primary-color); /* 设置页脚背景色 */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0; /* 固定在页面底部 */
+        }
+
+        /* 按钮样式 */
+        .btn {
+            background-color: var(--accent-color); /* 按钮背景色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 5px; /* 圆角按钮 */
+            transition: background-color 0.3s; /* 背景色变化的过渡效果 */
+        }
+
+        .btn:hover {
+            background-color: #45a049; /* 鼠标悬停时的按钮颜色 */
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* 避免模态框本身出现滚动条 */
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* 设置宽度为视口的80% */
+            max-width: 1000px; /* 最大宽度为1000px */
+            height: 80%; /* 设置高度为视口的80% */
+            max-height: 80vh; /* 最大高度为视口的90% */
+            overflow-y: auto; /* 内容溢出时垂直滚动 */
+            overflow-x: hidden; /* 禁止横向滚动 */
+            box-sizing: border-box; /* 确保内边距和边框在宽高计算内 */
+
+            position: fixed; /* 使用 fixed 定位 */
+            top: 49.5%; /* 距离顶部49.5% */
+            left: 50%; /* 距离左侧50% */
+            transform: translate(-50%, -50%); /* 调整位置，使其居中 */
+            border-radius: 5px; /* 添加圆角 */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 输入框和选择框样式 */
+        .form-group {
+            margin-bottom: 15px;
+            display: inline-block;
+            width: 33%; /* 控制每行显示3个输入框 */
+            padding-right: 10px;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* 包括内边距和边框 */
+        }
+
+        /* 小屏幕响应式布局 */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem; /* 标题字体大小自适应 */
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* 增加、删除输入框按钮样式 */
+        .add-input-btn, .remove-input-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: none;
+            font-size: 1rem;
+            transition: background-color 0.3s; /* 背景色变化的过渡效果 */
+        }
+
+        .add-input-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .remove-input-btn {
+            background-color: #f42515;
+            color: white;
+        }
+
+        .add-input-btn:hover {
+            background-color: #45a049;
+        }
+
+        .remove-input-btn:hover {
+            background-color: #f6594d;
+        }
+
+        /* 生成报文按钮样式 */
+        .btn {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #007b8c;
+        }
+
+        .anew-generate-btn {
+            display: inline-block;
+            padding: 7px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #generatedMessage, #analyzeMessage {
+            word-wrap: break-word; /* 强制单词换行 */
+            overflow-wrap: break-word; /* 确保长单词不会溢出 */
+        }
+
+        textarea {
+            width: 100%; /* 宽度占满父容器 */
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* 确保内边距和边框不影响宽度计算 */
+            resize: none; /* 禁止拖动调整大小 */
+        }
+
+        textarea:focus {
+            border-color: #5b9bd5;
+            outline: none; /* 去除聚焦时的默认蓝色框 */
+        }
